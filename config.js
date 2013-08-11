@@ -15,6 +15,7 @@ module.exports = function(app, express) {
 		app.use(express.static(path.join(__dirname, 'public')));
 	});
 
+	//dev env
 	app.configure('development', function() {
 		app.use(express.errorHandler({
 			dumpException: true,
@@ -22,6 +23,12 @@ module.exports = function(app, express) {
 		}));
 
 		app.mongoose.connect('mongodb://localhost/ustapi');
+	});
+
+	//prod env
+	app.configure('production', function() {
+		app.use(express.errorHandler());
+		app.mongoose.connect('mongodb://ustapi:hLutekbxrgVXXnPQ@ds037698.mongolab.com:37698/keroku_app17438787');
 	});
 
 	app.configure('production', function() {
