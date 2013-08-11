@@ -9,20 +9,28 @@ module.exports = function(app, models) {
 
 	// GET /courses
 	app.get('/courses', function(req, res) {
-		Course.find(function(err, courses) {
-			res.send(courses);
-		});
+		Course.find()
+			.sort({ dept: 1, code: 1})
+			.exec( function(err, docs) {
+				if (err) {
+					res.json(500, { error: err });
+				} else {
+					res.json(200, docs);
+				}
+			});
 	});
 
 	// GET /courses/:dept
 	app.get('/courses/:dept', function(req, res) {
-		Course.find({ dept: req.params.dept.toUpperCase() }, function(err, docs) {
-			if (err) {
-				res.json(500, { error: err });
-			} else {
-				res.json(200, docs);
-			}
-		});
+		Course.find({ dept: req.params.dept.toUpperCase() })
+			.sort({ code: 1 })
+			.exec( function(err, docs) {
+				if (err) {
+					res.json(500, { error: err });
+				} else {
+					res.json(200, docs);
+				}
+			});
 	});
 
 	// GET /courses/:dept/:code
@@ -31,13 +39,14 @@ module.exports = function(app, models) {
 			dept: req.params.dept.toUpperCase(),
 			code: req.params.code
 		};
-		Course.find(query, {_id: 0}, function(err, docs) {
-			if (err) {
-				res.json(500, { error: err} );
-			} else {
-				res.json(200, docs);
-			}
-		});
+		Course.find(query)
+			.exec( function(err, docs) {
+				if (err) {
+					res.json(500, { error: err} );
+				} else {
+					res.json(200, docs);
+				}
+			});
 	});
 
 	// POST /courses
