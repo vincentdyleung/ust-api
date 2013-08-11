@@ -28,7 +28,12 @@ module.exports = function(app, express) {
 	//prod env
 	app.configure('production', function() {
 		app.use(express.errorHandler());
-		app.mongoose.connect('mongodb://ustapi:hLutekbxrgVXXnPQ@ds037698.mongolab.com:37698/keroku_app17438787');
+		var mongoUri = process.env.MONGOLAB_URI;
+		var mongoOptions = {
+			user: process.env.MONGO_USER,
+			pass: process.env.MONGO_PASS
+		};
+		app.mongoose.connect(mongoUri, mongoOptions);
 	});
 
 	app.configure('production', function() {
