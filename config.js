@@ -28,12 +28,7 @@ module.exports = function(app, express) {
 	//prod env
 	app.configure('production', function() {
 		app.use(express.errorHandler());
-		var mongoUri = process.env.MONGOLAB_URI;
-		var mongoOptions = {
-			user: process.env.MONGO_USER,
-			pass: process.env.MONGO_PASS
-		};
-		app.mongoose.connect(mongoUri, mongoOptions);
+		app.mongoose.connect(process.env.MONGOLAB_URI);
 	});
 
 	app.configure('production', function() {
